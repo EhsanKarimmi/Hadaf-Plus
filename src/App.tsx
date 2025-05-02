@@ -1,10 +1,9 @@
-import { Button } from "antd";
-
 function App() {
   return (
+    // main container
     <div>
-      <Button type="primary">Button</Button>
-      <div className="bg-amber-400">hello</div>
+      {/* page title */}
+      <h1>Domains</h1>
     </div>
   );
 }
