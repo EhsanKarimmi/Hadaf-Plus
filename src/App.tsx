@@ -4,12 +4,19 @@ import Filter from "./components/Filter/Filter";
 import Search from "./components/Search/Search";
 import DomainsTable from "./components/DomainsTable/DomainsTable";
 import { useState } from "react";
+import { Domain } from "./types/Domain";
 
 function App() {
   // state
   const [openDrawer, setOpenDrawer] = useState(false);
   const [sort, setSort] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [editData, setEditData] = useState<Domain | null>(null);
+
+  const handleEdit = (domain: Domain) => {
+    setEditData(domain);
+    setOpenDrawer(true);
+  };
 
   return (
     // main container
@@ -37,10 +44,11 @@ function App() {
         </div>
       </div>
       {/* domains table */}
-      <DomainsTable />
+      <DomainsTable onEdit={handleEdit} />
       {/* drawer */}
       <Drawer
-        title="Basic Drawer"
+        title={<h2 className="text-2xl font-medium">Add Domain</h2>}
+        closeIcon={false}
         onClose={() => setOpenDrawer(false)}
         open={openDrawer}
       >
