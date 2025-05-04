@@ -1,20 +1,17 @@
 import { Select } from "antd";
+import { FilterProps } from "../../types/FilterProps";
 
-function Filter() {
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+function Filter({ sort, setSort }: FilterProps) {
   return (
-    <div className="bg-amber-500 p-4 rounded-lg shadow-md text-white flex items-center gap-2">
+    <div className="w-5/12">
       <Select
-        defaultValue="lucy"
-        style={{ width: 120 }}
-        onChange={handleChange}
+        defaultValue={sort}
+        size="large"
+        className="w-full"
+        onChange={(value) => setSort(value)}
         options={[
-          { value: "jack", label: "Jack" },
-          { value: "lucy", label: "Lucy" },
-          { value: "Yiminghe", label: "yiminghe" },
-          { value: "disabled", label: "Disabled", disabled: true },
+          { value: "asc", label: "Order by Ascending" },
+          { value: "desc", label: "Order by Descending" },
         ]}
       />
     </div>

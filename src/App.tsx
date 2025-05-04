@@ -6,15 +6,11 @@ import DomainsTable from "./components/DomainsTable/DomainsTable";
 import { useState } from "react";
 
 function App() {
-  const [open, setOpen] = useState(false);
+  // state
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [sort, setSort] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
   return (
     // main container
     <div>
@@ -24,9 +20,10 @@ function App() {
       <div className="p-5 flex justify-between items-center">
         {/* add domain button */}
         <Button
-          onClick={showDrawer}
+          onClick={() => setOpenDrawer(true)}
+          size="large"
           type="primary"
-          className="w-2/12 !p-6 !text-lg !font-light"
+          className="!px-6 !text-lg !font-light"
         >
           <span>
             <PlusOutlined />
@@ -34,15 +31,19 @@ function App() {
           <span>Add Domain</span>
         </Button>
         {/* filter and search container */}
-        <div className="flex justify-center items-center gap-10 bg-amber-100">
-          <Filter />
-          <Search />
+        <div className="w-5/12 flex justify-center items-center gap-10">
+          <Filter sort={sort} setSort={setSort} />
+          <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
       </div>
       {/* domains table */}
       <DomainsTable />
       {/* drawer */}
-      <Drawer title="Basic Drawer" onClose={onClose} open={open}>
+      <Drawer
+        title="Basic Drawer"
+        onClose={() => setOpenDrawer(false)}
+        open={openDrawer}
+      >
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>

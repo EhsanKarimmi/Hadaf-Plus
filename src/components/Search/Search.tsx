@@ -1,9 +1,17 @@
 import { Input } from "antd";
+import { SearchProps } from "../../types/SearchProps";
+import { SearchOutlined } from "@ant-design/icons";
 
-function Search() {
+function Search({ searchQuery, setSearchQuery }: SearchProps) {
   return (
-    <div>
-      <Input placeholder="Basic usage" />
+    <div className="w-6/12">
+      <Input
+        size="large"
+        defaultValue={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        addonBefore={<SearchOutlined />}
+        placeholder="Search..."
+      />
     </div>
   );
 }
