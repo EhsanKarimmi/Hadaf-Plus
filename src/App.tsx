@@ -1,20 +1,22 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Drawer } from "antd";
+import { Button } from "antd";
 import Filter from "./components/Filter/Filter";
 import Search from "./components/Search/Search";
 import DomainsTable from "./components/DomainsTable/DomainsTable";
 import { useState } from "react";
 import { Domain } from "./types/Domain";
+import DomainDrawer from "./components/DomainDrawer/DomainDrawer";
 
 function App() {
   // state
   const [openDrawer, setOpenDrawer] = useState(false);
   const [sort, setSort] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
-  const [editData, setEditData] = useState<Domain | null>(null);
+  const [editDomain, setEditDomain] = useState<Domain | null>(null);
 
-  const handleEdit = (domain: Domain) => {
-    setEditData(domain);
+  // store domain data for edit.
+  const edit = (domain: Domain) => {
+    setEditDomain(domain);
     setOpenDrawer(true);
   };
 
@@ -44,18 +46,13 @@ function App() {
         </div>
       </div>
       {/* domains table */}
-      <DomainsTable onEdit={handleEdit} />
+      <DomainsTable edit={edit} sort={sort} searchQuery={searchQuery} />
       {/* drawer */}
-      <Drawer
-        title={<h2 className="text-2xl font-medium">Add Domain</h2>}
-        closeIcon={false}
+      <DomainDrawer
+        editDomain={editDomain}
         onClose={() => setOpenDrawer(false)}
         open={openDrawer}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Drawer>
+      />
     </div>
   );
 }

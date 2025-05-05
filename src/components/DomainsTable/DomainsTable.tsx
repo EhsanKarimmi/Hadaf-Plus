@@ -3,13 +3,16 @@ import {
   useDeleteDomainMutation,
   useGetDomainsQuery,
 } from "../../services/domainApi";
+import { DomainsTableProps } from "../../types/DomainsTableProps";
 import { Domain } from "../../types/Domain";
 import { LinkOutlined, MoreOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 
-function DomainsTable({ onEdit }: { onEdit: (domain: Domain) => void }) {
+function DomainsTable({ edit, sort, searchQuery }: DomainsTableProps) {
   const { data = [], isLoading } = useGetDomainsQuery();
   const [deleteDomain] = useDeleteDomainMutation();
 
+  // columns and rows for render.
   const columns = [
     {
       title: "Domain URL",
@@ -54,7 +57,7 @@ function DomainsTable({ onEdit }: { onEdit: (domain: Domain) => void }) {
             placement="bottomRight"
             overlay={
               <Menu>
-                <Menu.Item onClick={() => onEdit(record)}>Edit</Menu.Item>
+                <Menu.Item onClick={() => edit(record)}>Edit</Menu.Item>
                 <Menu.Item disabled={status === "verified"}>Verify</Menu.Item>
                 <Menu.Item danger onClick={() => deleteDomain(record.id)}>
                   Delete
@@ -70,6 +73,28 @@ function DomainsTable({ onEdit }: { onEdit: (domain: Domain) => void }) {
     },
   ];
 
+  // filter data according to sort and search query.
+  const checkFilters = (data: Domain[]) => {
+    let filteredData: Domain[] | [] = [];
+    if (sort === "desc") {
+      filteredData = [...data].reverse();
+    }
+    if (sort === "asc") {
+      filteredData = data;
+    }
+    if (searchQuery !== "") {
+      filteredData = data.filter((item: Domain) =>
+        item?.domain?.includes(searchQuery)
+      );
+    }
+    return filteredData;
+  };
+
+  // :)
+  useEffect(() => {
+    checkFilters(data);
+  }, [sort, searchQuery]);
+
   return (
     <div className="p-5">
       <Table
@@ -77,7 +102,7 @@ function DomainsTable({ onEdit }: { onEdit: (domain: Domain) => void }) {
         pagination={false}
         size="large"
         columns={columns}
-        dataSource={data}
+        dataSource={checkFilters(data)}
         rowKey="id"
         loading={isLoading}
       />
